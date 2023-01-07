@@ -1,111 +1,143 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Button, FlatList, Alert } from "react-native";
-import { Card, DefaultTheme, FAB } from "react-native-paper";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  Alert,
+  Button,
+} from "react-native";
 
-function Home() {
+// LOGIN w/ Fetch
+
+// var myHeaders = new Headers();
+// myHeaders.append("Content-Type", "application/json");
+// // myHeaders.append("Cookie", "csrftoken=obCceeQc5vCIVojE6srUrW8XucoQfHMC; sessionid=dgy7clyjthuxa7ou7un7cugin9jpjv9u");
+
+// var raw = JSON.stringify({
+//   "username": "vs",
+//   "password": "vs"
+// });
+
+// var requestOptions = {
+//   method: 'POST',
+//   headers: myHeaders,
+//   body: raw,
+//   redirect: 'follow'
+// };
+
+// fetch("https://raezungton.pythonanywhere.com/user/users/login/", requestOptions)
+//   .then(response => response.text())
+//   .then(result => console.log(result))
+//   .catch(error => console.log('error', error));
+
+// Login w/ Fetch END
+
+// Login w/ Axios
+
+// var axios = require('axios');
+// var data = JSON.stringify({
+//   "username": "vs",
+//   "password": "vs"
+// });
+
+// var config = {
+//   method: 'post',
+//   url: 'https://raezungton.pythonanywhere.com/user/users/login/',
+//   headers: { 
+//     // 'X-CSRFToken': '45Mo2fNGeq1acz7uwEv6GOCqrZaabR7V', 
+//     'Content-Type': 'application/json', 
+//     // 'Cookie': 'csrftoken=aKC98G7kToWD73eyxLnTQbv23arGV3ox; sessionid=s6lret1kwwhdxn9has95q3xaoojltn9z'
+//   },
+//   data : data
+// };
+
+// axios(config)
+// .then(function (response) {
+//   console.log(JSON.stringify(response.data));
+// })
+// .catch(function (error) {
+//   console.log(error);
+// });
+
+// Login w/ Axios END
+
+// ARTILCES
+const Title = (props) => {
+  return <Text style={{ fontSize: 30 }}>{props.title}</Text>;
+};
+
+const Desc = (props) => {
+  return <Text style={{ fontSize: 20 }}>{props.description}</Text>;
+};
+
+const Article = (props) => {
+  return (
+    <View style={{ margin: 10 }}>
+      <Title title={props.item.title} />
+      <Desc description={props.item.description} />
+    </View>
+  );
+};
+
+const renderData = (item) => {
+  return <Article item={item} />;
+};
+
+const Home = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [likes, setLikes] = useState(0);
 
   useEffect(() => {
-    fetch("http://192.168.1.4:8000/polls/articles/", { method: "GET" })
+    fetch("https://raezungton.pythonanywhere.com/polls/articles/", { method: "GET" })
       .then((resp) => resp.json())
       .then((data) => {
-        // console.log(data)
-        setData(data)
-        setLoading(false)
+        console.log(data)
+        setData(data);
       })
-      .catch((error) => Alert.alert('error', error));
+      .catch((error) => Alert.alert("error", error));
   }, []);
 
-  const renderData = (item) => {
-    return (
-      <Card style={styles.cardStyle}>
-        <Text style={{ fontSize: 15 }}>{item.title}</Text>
-        <Text style={{ fontSize: 10 }}>{item.description}</Text>
-      </Card>
-    );
-  };
-
   return (
-    <View >
-        {/* first way  */}
-{/* 
-      <View>
-        {data.map((datum) => {
-          const { id, title, description } = datum;
-          return (
-            <Text>
-              {id}
-              {title}
-              {description}
-            </Text>
-          );
-        })}
-      </View> */}
+    <View>
+      <View style={styles.container}>
+        <Text style={{ fontSize: 40, textTransform: "uppercase" }}>
+          Artciles {likes}
+        </Text>
 
-      {/* second way */}
-
-      <View style={styles.cardStyle}>
-          <FlatList
-          data = {data}
-          renderItem = {({item}) => {
-              return renderData(item)
+        <Button
+          onPress={() => {
+            setLikes(likes + 1);
           }}
-          onRefresh = {() => loadData()}
-          refreshing = {loading}
+          title="Press to Like"
+        >
+        </Button>
 
-          keyExtractor = {item => `${item.id}`}
-          />
+        <FlatList
+          data={data}
+          renderItem={({ item }) => {
+            return renderData(item);
+          }}
+          keyExtractor={(item) => `${item.id}`}
+        />
+
+        <Text style={{ fontSize: 20, textTransform: "uppercase" }}>
+          There are ({data.length}) articles
+        </Text>
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  cardStyle: {
-    padding: 1,
-    margin: 1,
+  container: {
+    // paddingHorizontal: 30,
+    paddingVertical: 50,
+    paddingBottom: 130,
     justifyContent: "center",
-        alignItems: "center"
-  },
-
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "blue",
-  },
-
-  task: {
-    color: "#fff",
-    width: "40%",
-    fontSize: 16,
-  },
-
-  taskContainer: {
-    backgroundColor: "#3E3364",
-    borderRadius: 12,
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    flex: 1,
-    paddingHorizontal: 1,
-    paddingVertical: 5,
-    minHeight: 50,
-  },
-  indexContainer: {
-    backgroundColor: "#3E3364",
-    borderRadius: 12,
-    marginRight: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 2,
-    height: 50,
-  },
-  index: {
-    color: "#fff",
-    fontSize: 20,
+    flexDirection: "column",
   },
 });
 

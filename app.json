@@ -1,5 +1,6 @@
 {
   "expo": {
+    "entryPoint": "./src/index.js",
     "name": "AwesomeProject",
     "slug": "AwesomeProject",
     "version": "1.0.0",
@@ -24,10 +25,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.razungton.AwesomeProject"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "04fa6cf2-fb2e-4f6a-94d9-01265a51b459"
+      }
     }
   }
 }

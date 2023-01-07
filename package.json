@@ -9,11 +9,24 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.11",
+    "@react-navigation/drawer": "^6.5.3",
+    "@react-navigation/native": "^6.0.16",
+    "@react-navigation/native-stack": "^6.9.4",
+    "@reduxjs/toolkit": "^1.9.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "expo": "~46.0.16",
     "expo-status-bar": "~1.4.0",
     "react": "18.0.0",
     "react-native": "0.69.6",
-    "react-native-paper": "^4.12.5"
+    "react-native-gesture-handler": "~2.5.0",
+    "react-native-paper": "^4.12.5",
+    "react-native-reanimated": "~2.9.1",
+    "react-native-simple-toast": "^1.1.4",
+    "react-native-toast-message": "^2.1.5",
+    "react-native-toast-notifications": "^3.3.1",
+    "react-navigation": "^4.4.4",
+    "react-redux": "^8.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
