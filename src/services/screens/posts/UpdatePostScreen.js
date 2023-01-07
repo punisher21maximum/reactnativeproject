@@ -6,21 +6,21 @@ import {
   // TextInput,
   ScrollView,
 } from "react-native";
+import { useNavigationParam, useRoute } from "@react-navigation/native";
 import { TextInput, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { styles, toastConfig } from "../../../style";
 import Toast from "react-native-toast-message";
-import {
-  useArticleCreateMutation,
-} from "../../userAuthAPI";
+import { useArticleUpdateMutation } from "../../userAuthAPI";
 import { getToken } from "../../AsyncStorageService";
 
-function Create() {
-  const [title, setTitle] = useState("dd");
-  const [description, setDescription] = useState("dd");
+function Update({ route, navigation }) {
+
+  const [title, setTitle] = useState(route.params.item.title); 
+  const [description, setDescription] = useState(route.params.item.description);
   const [usertoken, setUserToken] = useState();
 
-  const [createArticle] = useArticleCreateMutation();
+  const [ updateArticle ] = useArticleUpdateMutation();
 
   //   const clearTextInput = () => {
   //     setPassword("");
@@ -41,33 +41,34 @@ function Create() {
   }, []);
 
   const handleFormSubmit = async () => {
+
     const formdata = { title: title, description: description };
     const { access } = usertoken;
-    const res = await createArticle({ access, formdata });
+    const pk = route.params.item.id;
+    const res = await updateArticle({ access, formdata, pk });
     // const res = await changeUserPassword({ formdata })
     console.log("Response", usertoken, access);
+
     if (res.data) {
-      console.log("Response Success Article Create", res.data);
-        clearTextInput();
+      console.log("Response Success Article Update", res.data);
+
+    //   clearTextInput();
+
       Toast.show({
         type: "done",
         position: "top",
         topOffset: 0,
-        text1: "Article created",
+        text1: "Article updated",
       });
     }
+    else {
+        console.log("No response")
+    }
+
     if (res.error) {
       console.log("Response Error", res.error);
-      // Toast.show({
-      //   type: 'warning',
-      //   position: 'top',
-      //   topOffset: 0,
-      //   ...(res.error.data.errors.password ? { text1: res.error.data.errors.password[0] } : ''),
-      //   ...(res.error.data.errors.password2 ? { text1: res.error.data.errors.password2[0] } : ''),
-      //   ...(res.error.data.errors.non_field_errors ? { text1: res.error.data.errors.non_field_errors[0] } : ''),
-      //   ...(res.error.data.errors.messages ? { text1: res.error.data.errors.messages[0].message } : ''),
-      // });
     }
+
   };
 
   return (
@@ -76,13 +77,7 @@ function Create() {
       <ScrollView keyboardShouldPersistTaps="handled">
         <View>
           <View>
-            {/* <TextInput
-              style={styles.input}
-              value={title}
-              onChangeText={setTitle}
-              placeholder="Title"
-            //   secureTextEntry={true}
-            /> */}
+              <Text>"hello" {route.params.item.title} {route.params.item.id}</Text>
             <TextInput
               style={styles.inputStyle}
               label="Title"
@@ -93,13 +88,6 @@ function Create() {
           </View>
 
           <View>
-            {/* <TextInput
-              style={styles.input}
-              value={description}
-              onChangeText={setDescription}
-              placeholder="Description"
-            //   secureTextEntry={true}
-            /> */}
             <TextInput
               style={styles.inputStyle}
               label="Description"
@@ -118,7 +106,7 @@ function Create() {
               mode="contained"
               onPress={handleFormSubmit}
             >
-              Insert Article
+              Update Article
             </Button>
           </View>
         </View>
@@ -127,4 +115,4 @@ function Create() {
   );
 }
 
-export default Create;
+export default Update;

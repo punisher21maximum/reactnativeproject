@@ -23,11 +23,11 @@ const UserPanelTab = () => {
         component={ChangePasswordScreen}
         options={{ headerTitle: "Change Password" }}
       /> */}
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="CreatePost"
         component={CreatePostScreen}
         options={{ headerTitle: "Create Post" }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };

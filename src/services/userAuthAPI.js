@@ -64,10 +64,35 @@ export const userAuthAPI = createApi({
     }),
     articleCreate: builder.mutation({
       query: ({access, formdata}) => {
-        console.log("My Log start", access, "break", formdata, "My Log end");
         return {
           url: "polls/articles/",
           method: "POST",
+          body: formdata,
+          headers: {
+            'authorization': `Bearer ${access}`,
+          }
+        };
+      },
+    }),
+    articleUpdate: builder.mutation({
+      query: ({access, formdata, pk}) => {
+        console.log("update api", "polls/articles/" + pk + "/")
+        return {
+          url: "polls/articles/" + pk + "/",
+          method: "PUT",
+          body: formdata,
+          headers: {
+            'authorization': `Bearer ${access}`,
+          }
+        };
+      },
+    }),
+    articleDelete: builder.mutation({
+      query: ({access, pk}) => {
+        console.log("update api", "polls/articles/" + pk + "/")
+        return {
+          url: "polls/articles/" + pk + "/",
+          method: "PUT",
           body: formdata,
           headers: {
             'authorization': `Bearer ${access}`,
@@ -97,5 +122,6 @@ export const {
   useLoginUserMutation,
   useChangeUserPasswordMutation,
   useArticlesListQuery,
-  useArticleCreateMutation
+  useArticleCreateMutation,
+  useArticleUpdateMutation,
 } = userAuthAPI;

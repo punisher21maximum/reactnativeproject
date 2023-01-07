@@ -3,7 +3,7 @@ import {
   View,
   Text,
   FlatList,
-  Button,
+  // Button,
   TextInput,
   TouchableWithoutFeedback,
   ScrollView,
@@ -11,13 +11,13 @@ import {
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import { FAB } from "react-native-paper";
+import { FAB, Button } from "react-native-paper";
 import { styles, toastConfig } from "../../../style";
 
 import { storeToken, getToken, getTokenData } from "../../AsyncStorageService";
 import { useArticlesListQuery, useArticleCreateQuery } from "../../userAuthAPI";
 
-import Create from "../posts/CreatePostScreen";
+import Update from "../posts/UpdatePostScreen";
 
 
 const Title = (props) => {
@@ -29,10 +29,24 @@ const Desc = (props) => {
 };
 
 const Article = (props) => {
+  const navigation = useNavigation();
+  const item = props.item;
+
   return (
     <View style={{ margin: 10 }}>
       <Title title={props.item.title} />
       <Desc description={props.item.description} />
+      {/* <Update item={props.item} /> */}
+      <Button
+        style={{ margin: 10 }}
+        icon="pencil"
+        mode="contained"
+        onPress={() => {
+          navigation.navigate("UpdatePost", props);
+        }}
+      >
+        Edit Article
+      </Button>
     </View>
   );
 };
@@ -64,10 +78,7 @@ const HomeScreen = () => {
   console.log(token);
 
   return (
-    // <Create/>
     <View>
-      {/* <Text style={{ fontSize: 34, fontWeight: "bold" }}>HomeScreen</Text>
-      <Text style={{ fontSize: 30, fontWeight: "bold" }}>All Products</Text> */}
 
       <FlatList
         style={{ padding: 20 }}
@@ -87,8 +98,6 @@ const HomeScreen = () => {
         }}
       />
 
-      
-
       <View style={{ fontSize: 30, fontWeight: "bold" }}>
         <TouchableWithoutFeedback
           onPress={() => {
@@ -100,6 +109,7 @@ const HomeScreen = () => {
           </Text>
         </TouchableWithoutFeedback>
       </View>
+      
     </View>
   );
 };

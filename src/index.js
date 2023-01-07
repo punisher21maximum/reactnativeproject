@@ -15,6 +15,7 @@ import { store } from "./store";
 import ChangePasswordScreen from "./services/screens/user/ChangePasswordScreen";
 import HomeScreen from "./services/screens/common/HomeScreen";
 import CreatePostScreen from "./services/screens/posts/CreatePostScreen";
+import UpdatePostScreen from "./services/screens/posts/UpdatePostScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -56,6 +57,11 @@ function App() {
             name="CreatePost"
             component={CreatePostScreen}
             options={{ title: "Create Post" }}
+          />
+          <Stack.Screen
+            name="UpdatePost" 
+            component={UpdatePostScreen}
+            options={{ title: "Update Post" }}
           />
           <Stack.Screen
             name="UserPanelTab"
