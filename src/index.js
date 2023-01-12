@@ -16,6 +16,7 @@ import ChangePasswordScreen from "./services/screens/user/ChangePasswordScreen";
 import HomeScreen from "./services/screens/common/HomeScreen";
 import CreatePostScreen from "./services/screens/posts/CreatePostScreen";
 import UpdatePostScreen from "./services/screens/posts/UpdatePostScreen";
+import DeletePostScreen from "./services/screens/posts/DeletePostScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -62,6 +63,11 @@ function App() {
             name="UpdatePost" 
             component={UpdatePostScreen}
             options={{ title: "Update Post" }}
+          />
+          <Stack.Screen
+            name="DeletePost" 
+            component={DeletePostScreen}
+            options={{ title: "Delete Post" }}
           />
           <Stack.Screen
             name="UserPanelTab"

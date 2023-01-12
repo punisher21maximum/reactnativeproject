@@ -8,17 +8,15 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   Pressable,
+  Image,
 } from "react-native";
-
+import Toast from "react-native-toast-message";
 import { useNavigation } from "@react-navigation/native";
 import { FAB, Button } from "react-native-paper";
 import { styles, toastConfig } from "../../../style";
 
 import { storeToken, getToken, getTokenData } from "../../AsyncStorageService";
 import { useArticlesListQuery, useArticleCreateQuery } from "../../userAuthAPI";
-
-import Update from "../posts/UpdatePostScreen";
-
 
 const Title = (props) => {
   return <Text style={{ fontSize: 30 }}>{props.title}</Text>;
@@ -35,8 +33,17 @@ const Article = (props) => {
   return (
     <View style={{ margin: 10 }}>
       <Title title={props.item.title} />
+      <Image
+        style={{ width: 330, height: 400, marginVertical: 10 }}
+        source={{
+          uri: "https://w7.pngwing.com/pngs/850/684/png-transparent-red-and-black-galaxy-samsung-galaxy-desktop-4k-resolution-high-definition-television-dream-miscellaneous-atmosphere-computer-thumbnail.png",
+        }}
+        resizeMode={"cover"} // cover or contain its upto you view look
+      />
       <Desc description={props.item.description} />
+
       {/* <Update item={props.item} /> */}
+
       <Button
         style={{ margin: 10 }}
         icon="pencil"
@@ -47,12 +54,46 @@ const Article = (props) => {
       >
         Edit Article
       </Button>
+
+      <Button
+        style={{ margin: 10 }}
+        icon="pencil"
+        mode="contained"
+        color="maroon"
+        onPress={() => {
+          navigation.navigate("DeletePost", props);
+        }}
+      >
+        Delete Article
+      </Button>
     </View>
   );
 };
 
 const renderData = (item) => {
+  
   return <Article item={item} />;
+};
+
+const Read = (props) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const articleListQueryResp = useArticlesListQuery(props.token["access"]);
+    // setData(articleListQueryResp.data);
+  }, [])
+  
+  // console.log(data, articleListQueryResp);
+  // console.log(props.token);
+
+  return <FlatList
+        style={{ padding: 20 }}
+        data={data}
+        renderItem={({ item }) => {
+          return renderData(item);
+        }}
+        keyExtractor={(item) => `${item.id}`}
+      />;
 };
 
 const HomeScreen = () => {
@@ -72,22 +113,14 @@ const HomeScreen = () => {
     })();
   }, []);
 
-  const articleListQueryResp = useArticlesListQuery(token["access"]);
-  const data = articleListQueryResp.data;
-  console.log(data, articleListQueryResp);
-  console.log(token);
+  // const articleListQueryResp = useArticlesListQuery(token["access"]);
+  // const data = articleListQueryResp.data;
+  // console.log(data, articleListQueryResp);
+  // console.log(token);
 
   return (
     <View>
-
-      <FlatList
-        style={{ padding: 20 }}
-        data={data}
-        renderItem={({ item }) => {
-          return renderData(item);
-        }}
-        keyExtractor={(item) => `${item.id}`}
-      />
+      <Read token={token}/>
 
       <FAB 
         style={styles.fab} 
@@ -109,7 +142,6 @@ const HomeScreen = () => {
           </Text>
         </TouchableWithoutFeedback>
       </View>
-      
     </View>
   );
 };

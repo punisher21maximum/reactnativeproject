@@ -15,7 +15,7 @@ import {
 } from "../../userAuthAPI";
 import { getToken } from "../../AsyncStorageService";
 
-function Create() {
+function Create({ route, navigation }) {
   const [title, setTitle] = useState("dd");
   const [description, setDescription] = useState("dd");
   const [usertoken, setUserToken] = useState();
@@ -46,9 +46,11 @@ function Create() {
     const res = await createArticle({ access, formdata });
     // const res = await changeUserPassword({ formdata })
     console.log("Response", usertoken, access);
+
+    navigation.navigate("Home");
+
     if (res.data) {
       console.log("Response Success Article Create", res.data);
-        clearTextInput();
       Toast.show({
         type: "done",
         position: "top",

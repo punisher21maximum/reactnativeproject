@@ -89,11 +89,11 @@ export const userAuthAPI = createApi({
     }),
     articleDelete: builder.mutation({
       query: ({access, pk}) => {
-        console.log("update api", "polls/articles/" + pk + "/")
+        console.log("delete api", "polls/articles/" + pk + "/")
         return {
           url: "polls/articles/" + pk + "/",
-          method: "PUT",
-          body: formdata,
+          method: "DELETE",
+          // body: formdata,
           headers: {
             'authorization': `Bearer ${access}`,
           }
@@ -123,5 +123,6 @@ export const {
   useChangeUserPasswordMutation,
   useArticlesListQuery,
   useArticleCreateMutation,
+  useArticleDeleteMutation,
   useArticleUpdateMutation,
 } = userAuthAPI;
